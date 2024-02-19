@@ -1,6 +1,8 @@
+import androidx.compose.runtime.MutableState
+
 data class Cell (
     val isBomb: Boolean,
-    var value: Int,
-    var isOpened: Boolean,
-    var flag: Boolean,
+    var value: MutableState<Int>,
+    var isOpened: MutableState<Boolean>,
+    var flag: MutableState<Boolean>,
 )
