@@ -3,9 +3,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Warning
@@ -27,29 +25,56 @@ fun GameScreen(gameController: GameController) {
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = { gameController.startGame(5, 10, 8) }) {
+        val state = gameController.state.collectAsState()
+        Text(text = state.value.state.toString())
+        Button(onClick = { gameController.startGame() }) {
             Text(text = "Start Game")
         }
-        val state = gameController.state.collectAsState()
-
-        Text(text = state.value.state.toString())
-        for (i in 0 until state.value.rows) {
-            Row {
-                for (j in 0 until state.value.columns) {
-                    CellItem(
-                        cell = state.value.grid[i][j],
-                        onClick = {
-                            if (state.value.state == GameProcess.STARTED)
-                                gameController.openCell(j, i)
-                        },
-                        onLongClick = {
-                            if (state.value.state == GameProcess.STARTED)
-                                gameController.flagCell(j, i)
-                        }
-                    )
+        Button(onClick = { gameController.openSettings()}){
+            Text(text = "Settings")
+        }
+        if (state.value.state == GameProcess.SETTINGS) {
+            Row (horizontalArrangement = Arrangement.SpaceEvenly) {
+                TextField(
+                    value = state.value.mines.toString(),
+                    onValueChange = { gameController.changeMapSettings(mines = it) },
+                    label = { Text("Mines") },
+                    modifier = Modifier.width(90.dp)
+                )
+                TextField(
+                    value = state.value.rows.toString(),
+                    onValueChange = { gameController.changeMapSettings(rows = it) },
+                    label = { Text("Rows") },
+                    modifier = Modifier.width(90.dp)
+                )
+                TextField(
+                    value = state.value.columns.toString(),
+                    onValueChange = { gameController.changeMapSettings(columns = it) },
+                    label = { Text("Columns") },
+                    modifier = Modifier.width(90.dp)
+                )
+            }
+        }
+        if (state.value.state == GameProcess.STARTED || state.value.state == GameProcess.ENDED){
+            for (i in 0 until state.value.rows) {
+                Row {
+                    for (j in 0 until state.value.columns) {
+                        CellItem(
+                            cell = state.value.grid[i][j],
+                            onClick = {
+                                if (state.value.state == GameProcess.STARTED)
+                                    gameController.openCell(j, i)
+                            },
+                            onLongClick = {
+                                if (state.value.state == GameProcess.STARTED)
+                                    gameController.flagCell(j, i)
+                            }
+                        )
+                    }
                 }
             }
         }
+
     }
 }
 
@@ -63,8 +88,8 @@ fun CellItem(
     Box(
         modifier = Modifier
             .combinedClickable(onClick = onClick, onLongClick = onLongClick)
-            .size(60.dp)
-            //.background(color = if (cell.value.isOpened) Color.LightGray else Color.White)
+            .size(30.dp)
+            //.background(color = if (cell.isOpened.value) Color.LightGray else Color.White)
             .border(BorderStroke(1.dp, Color.Black)),
         contentAlignment = Alignment.Center
     ) {
@@ -80,7 +105,7 @@ fun CellItem(
                 }
                 Text(
                     cell.value.value.toString(),
-                    style = TextStyle(fontSize = 32.sp, fontWeight = FontWeight.W700, color = color)
+                    style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.W700, color = color)
                 )
             }
         }
@@ -89,3 +114,4 @@ fun CellItem(
         }
     }
 }
+

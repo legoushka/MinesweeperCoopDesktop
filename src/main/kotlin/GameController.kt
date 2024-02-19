@@ -7,7 +7,7 @@ class GameController {
 
     private val _state = MutableStateFlow<GameState>(GameState())
     val state = _state.asStateFlow()
-    fun startGame(rows: Int, columns: Int, mines: Int) {
+    fun startGame(rows: Int = _state.value.rows, columns: Int = _state.value.columns, mines: Int = _state.value.mines) {
         _state.value = GameState(
             grid = mapGenerator(rows, columns, mines),
             state = GameProcess.STARTED,
@@ -55,6 +55,21 @@ class GameController {
             _state.value.grid[y][x].flag.value = !_state.value.grid[y][x].flag.value
     }
 
+    fun changeMapSettings(
+        rows: String = _state.value.rows.toString(),
+        columns: String = _state.value.columns.toString(),
+        mines: String = _state.value.mines.toString()
+    ) {
+        _state.value = _state.value.copy(
+            rows = rows.toInt().coerceAtLeast(5),
+            columns = columns.toInt().coerceAtLeast(5),
+            mines = mines.toInt().coerceAtLeast(5)
+        )
+    }
+    fun openSettings() {
+        _state.value = _state.value.copy(state = GameProcess.SETTINGS)
+    }
+
     private fun mapGenerator(rows: Int, columns: Int, mines: Int): List<List<Cell>> {
         var minescounter = 0
         return List(rows) {
@@ -81,5 +96,7 @@ class GameController {
             }
         }
     }
+
+
 
 }
