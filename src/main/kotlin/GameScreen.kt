@@ -38,8 +38,14 @@ fun GameScreen(gameController: GameController) {
                 for (j in 0 until state.value.columns) {
                     CellItem(
                         cell = state.value.grid[i][j],
-                        onClick = { gameController.openCell(j, i) },
-                        onLongClick = { gameController.flagCell(j, i) }
+                        onClick = {
+                            if (state.value.state == GameProcess.STARTED)
+                                gameController.openCell(j, i)
+                        },
+                        onLongClick = {
+                            if (state.value.state == GameProcess.STARTED)
+                                gameController.flagCell(j, i)
+                        }
                     )
                 }
             }
