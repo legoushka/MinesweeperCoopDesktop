@@ -1,11 +1,7 @@
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -14,6 +10,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -82,7 +79,7 @@ fun CellGrid(
     onFlagCell: (Int, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column (modifier = modifier) {
+    Column(modifier = modifier) {
         for (i in 0 until rows) {
             Row {
                 for (j in 0 until columns) {
@@ -185,8 +182,12 @@ fun CellItem(
             }
         if (cell.isOpened.value) {
             if (cell.isBomb.value)
-                Icon(Icons.Default.Favorite, contentDescription = "Bomb")
-            else if(cell.value.value != 0){
+                Image(
+                    painter = painterResource("bomb.png"),
+                    contentDescription = "Bomb",
+                    modifier = Modifier.size(20.dp)
+                )
+            else if (cell.value.value != 0) {
                 val color: Color = when (cell.value.value) {
                     1 -> Color(0XFF0302fd)
                     2 -> Color(0XFF048c06)
@@ -205,7 +206,7 @@ fun CellItem(
             }
         }
         if (cell.flag.value) {
-            Icon(Icons.Default.Warning, tint = Color.Red, contentDescription = "Flag")
+            Image(painter = painterResource("flag.png"), contentDescription = "Flag", modifier = Modifier.size(20.dp))
         }
     }
 }
