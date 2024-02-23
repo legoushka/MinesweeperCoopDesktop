@@ -186,7 +186,7 @@ fun CellItem(
         if (cell.isOpened.value) {
             if (cell.isBomb.value)
                 Icon(Icons.Default.Favorite, contentDescription = "Bomb")
-            else {
+            else if(cell.value.value != 0){
                 val color: Color = when (cell.value.value) {
                     1 -> Color(0XFF0302fd)
                     2 -> Color(0XFF048c06)
