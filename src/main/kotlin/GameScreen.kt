@@ -56,7 +56,7 @@ fun GameScreen(gameController: GameController) {
                 )
             }
         }
-        if (state.value.state == GameProcess.STARTED || state.value.state == GameProcess.ENDED){
+        if (state.value.state != GameProcess.SETTINGS){
             for (i in 0 until state.value.rows) {
                 Row {
                     for (j in 0 until state.value.columns) {

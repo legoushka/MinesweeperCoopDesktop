@@ -23,7 +23,7 @@ class GameController {
             return
         }
         if (_state.value.grid[y][x].isBomb.value) {
-            _state.value = _state.value.copy(state = GameProcess.ENDED)
+            _state.value = _state.value.copy(state = GameProcess.LOSE)
             for (i in _state.value.grid.flatMap { it -> it.map { it -> if (it.isBomb.value) it.isOpened.value = true } })
                 return
         }
@@ -35,6 +35,7 @@ class GameController {
             }
         }
         _state.value.grid[y][x].isOpened.value = true
+        _state.value = _state.value.copy(openedCells = _state.value.openedCells + 1)
         _state.value.grid[y][x].value.value = bombsAround
         if (bombsAround == 0) {
             for (row in (y - 1).coerceIn(0, state.value.rows - 1)..(y + 1).coerceIn(0, state.value.rows - 1)) {
@@ -48,6 +49,10 @@ class GameController {
                 }
             }
         }
+        if (state.value.openedCells == (state.value.columns * state.value.rows) - state.value.mines ){
+            _state.value = _state.value.copy(state = GameProcess.WIN)
+        }
+
     }
 
     fun flagCell(x: Int, y: Int) {
