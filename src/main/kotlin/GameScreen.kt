@@ -163,28 +163,24 @@ fun CellItem(
                     end = Offset(x = canvasWidth, y = 0f),
                     color = Color.White,
                     strokeWidth = 10f,
-                    cap = StrokeCap.Round
                 )
                 drawLine(
                     start = Offset(x = 0f, y = 0f),
                     end = Offset(x = 0f, y = canvasHeight),
                     color = Color.White,
                     strokeWidth = 10f,
-                    cap = StrokeCap.Round
                 )
                 drawLine(
                     start = Offset(x = canvasWidth, y = 0f),
                     end = Offset(x = canvasWidth, y = canvasHeight),
                     color = Color(0XFF818181),
                     strokeWidth = 10f,
-                    cap = StrokeCap.Round
                 )
                 drawLine(
                     start = Offset(x = 0f, y = canvasHeight),
                     end = Offset(x = canvasWidth, y = canvasHeight),
                     color = Color(0XFF818181),
                     strokeWidth = 10f,
-                    cap = StrokeCap.Round
                 )
             }
         if (cell.isOpened.value) {
