@@ -22,15 +22,15 @@ class GameController {
         if (_state.value.grid[y][x].flag.value) {
             return
         }
-        if (_state.value.grid[y][x].isBomb) {
+        if (_state.value.grid[y][x].isBomb.value) {
             _state.value = _state.value.copy(state = GameProcess.ENDED)
-            for (i in _state.value.grid.flatMap { it -> it.map { it -> if (it.isBomb) it.isOpened.value = true } })
+            for (i in _state.value.grid.flatMap { it -> it.map { it -> if (it.isBomb.value) it.isOpened.value = true } })
                 return
         }
         var bombsAround = 0
         for (row in (y - 1).coerceIn(0, state.value.rows - 1)..(y + 1).coerceIn(0, state.value.rows - 1)) {
             for (column in (x - 1).coerceIn(0, state.value.columns - 1)..(x + 1).coerceIn(0, state.value.columns - 1)) {
-                if (state.value.grid[row][column].isBomb)
+                if (state.value.grid[row][column].isBomb.value)
                     bombsAround++
             }
         }
@@ -66,37 +66,34 @@ class GameController {
             mines = mines.toInt().coerceAtLeast(5)
         )
     }
+
     fun openSettings() {
         _state.value = _state.value.copy(state = GameProcess.SETTINGS)
     }
 
     private fun mapGenerator(rows: Int, columns: Int, mines: Int): List<List<Cell>> {
-        var minescounter = 0
-        return List(rows) {
+        var minesCounter = mines
+        val map = List(rows) {
             List(columns) { _ ->
-                if ((1..100).random() < 10 && minescounter < mines) {
-                    minescounter++
-                    return@List Cell(
-                        isBomb = true,
-                        value = mutableStateOf(-1),
-                        flag = mutableStateOf(false),
-                        isOpened = mutableStateOf(
-                            false
-                        )
+                Cell(
+                    isBomb = mutableStateOf(false),
+                    value = mutableStateOf(-1),
+                    flag = mutableStateOf(false),
+                    isOpened = mutableStateOf(
+                        false
                     )
-                } else
-                    return@List Cell(
-                        isBomb = false,
-                        value = mutableStateOf(0),
-                        flag = mutableStateOf(false),
-                        isOpened = mutableStateOf(
-                            false
-                        )
-                    )
+                )
             }
         }
+        while (minesCounter != 0){
+            val randomRow = (0 until rows).random()
+            val randomColumn = (0 until columns).random()
+            if(!map[randomRow][randomColumn].isBomb.value){
+                map[randomRow][randomColumn].isBomb.value = true
+                minesCounter--
+            }
+        }
+        return map
+
     }
-
-
-
 }

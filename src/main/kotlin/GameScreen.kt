@@ -33,6 +33,7 @@ fun GameScreen(gameController: GameController) {
         Button(onClick = { gameController.openSettings()}){
             Text(text = "Settings")
         }
+        //TODO фикс обработки ввода
         if (state.value.state == GameProcess.SETTINGS) {
             Row (horizontalArrangement = Arrangement.SpaceEvenly) {
                 TextField(
@@ -94,7 +95,7 @@ fun CellItem(
         contentAlignment = Alignment.Center
     ) {
         if (cell.isOpened.value) {
-            if (cell.isBomb)
+            if (cell.isBomb.value)
                 Icon(Icons.Default.Favorite, contentDescription = "Bomb")
             else {
                 val color: Color = when (cell.value.value) {
