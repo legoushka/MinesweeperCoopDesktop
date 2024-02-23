@@ -33,27 +33,19 @@ fun GameScreen(gameController: GameController) {
         Button(onClick = { gameController.openSettings()}){
             Text(text = "Settings")
         }
-        //TODO фикс обработки ввода
         if (state.value.state == GameProcess.SETTINGS) {
-            Row (horizontalArrangement = Arrangement.SpaceEvenly) {
-                TextField(
-                    value = state.value.mines.toString(),
-                    onValueChange = { gameController.changeMapSettings(mines = it) },
-                    label = { Text("Mines") },
-                    modifier = Modifier.width(90.dp)
-                )
-                TextField(
-                    value = state.value.rows.toString(),
-                    onValueChange = { gameController.changeMapSettings(rows = it) },
-                    label = { Text("Rows") },
-                    modifier = Modifier.width(90.dp)
-                )
-                TextField(
-                    value = state.value.columns.toString(),
-                    onValueChange = { gameController.changeMapSettings(columns = it) },
-                    label = { Text("Columns") },
-                    modifier = Modifier.width(90.dp)
-                )
+            Row {
+                Button(onClick = { gameController.changeMapSettings(rows = 9, columns = 9, mines = 10)}){
+                    Text(text = "Beginner")
+                }
+                Spacer(Modifier.width(8.dp))
+                Button(onClick = { gameController.changeMapSettings(rows = 16, columns = 16, mines = 40)}){
+                    Text(text = "Intermediate")
+                }
+                Spacer(Modifier.width(8.dp))
+                Button(onClick = { gameController.changeMapSettings(rows = 16, columns = 30, mines = 99)}){
+                    Text(text = "Intermediate")
+                }
             }
         }
         if (state.value.state != GameProcess.SETTINGS){

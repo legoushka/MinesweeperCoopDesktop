@@ -61,14 +61,14 @@ class GameController {
     }
 
     fun changeMapSettings(
-        rows: String = _state.value.rows.toString(),
-        columns: String = _state.value.columns.toString(),
-        mines: String = _state.value.mines.toString()
+        rows: Int = _state.value.rows,
+        columns: Int = _state.value.columns,
+        mines: Int = _state.value.mines
     ) {
         _state.value = _state.value.copy(
-            rows = rows.toInt().coerceAtLeast(5),
-            columns = columns.toInt().coerceAtLeast(5),
-            mines = mines.toInt().coerceAtLeast(5)
+            rows = rows,
+            columns = columns,
+            mines = mines
         )
     }
 
